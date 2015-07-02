@@ -1,0 +1,20 @@
+package com.oner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Sender {
+	private static Logger logger = LoggerFactory.getLogger(Sender.class);
+
+	@Autowired
+	private JmsTemplate jmsTemplate;
+	
+	public void convertAndSendMessage(String destination, Notification notification) {
+		jmsTemplate.convertAndSend(destination, notification);
+		logger.info("Sending notification | Id: "+notification.getId());
+	}
+}
