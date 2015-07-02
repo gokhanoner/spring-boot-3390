@@ -1,3 +1,3 @@
 drop table notifications if exists;
 
-create table notifications (id integer, message varchar(255));
+create table notifications (id integer, lstnr varchar(10), message varchar(255));

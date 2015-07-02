@@ -19,12 +19,12 @@ public class Listener {
 	@Autowired
 	private DBService dbService;
 
-	@JmsListener(destination = "test")
-	public void onMessage(Message message) {
+	@JmsListener(destination = "test_125")
+	public void listener125(Message message) {
 		try {
 			Notification notification = (Notification) ((ObjectMessage) message).getObject();
 			logger.info("Received notification | Id: " + notification.getId() + " | Redelivery: " + getDeliveryNumber(message));
-			dbService.saveToBD(notification);
+			dbService.saveToBD(notification, "125");
 			checkPostprocessException(message, notification);
 		} catch (JMSException e) {
 			throw JmsUtils.convertJmsAccessException(e);
@@ -32,6 +32,19 @@ public class Listener {
 
 	}
 
+	@JmsListener(destination = "test_124", containerFactory = "jmsListenerContainerFactory_124")
+	public void listener124(Message message) {
+		try {
+			Notification notification = (Notification) ((ObjectMessage) message).getObject();
+			logger.info("Received notification | Id: " + notification.getId() + " | Redelivery: " + getDeliveryNumber(message));
+			dbService.saveToBD(notification, "124");
+			checkPostprocessException(message, notification);
+		} catch (JMSException e) {
+			throw JmsUtils.convertJmsAccessException(e);
+		}
+
+	}
+	
 	/**
 	 * Execution failure after saving the message to the DB
 	 * 

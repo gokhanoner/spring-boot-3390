@@ -6,14 +6,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@ActiveProfiles("1.2.4")
-//@ActiveProfiles("1.2.5")
 public class JMSTransctionTest {
 
 	@Autowired
@@ -22,11 +19,18 @@ public class JMSTransctionTest {
 	private DBService dbService;
 	
 	@Test
-	public void testCorrectMessage() throws InterruptedException {
+	public void test125Release() throws InterruptedException {
 		Notification notification = new Notification(0, "notification to deliver correctly");
-		sender.convertAndSendMessage("test", notification);
-		Thread.sleep(6000);
-		assertEquals(1, dbService.getNotificationCount(0));
+		sender.convertAndSendMessage("test_125", notification);
+		Thread.sleep(2000);
+		assertEquals(1, dbService.getNotificationCount(0, "125"));
 	}
-	
+
+	@Test
+	public void test124Release() throws InterruptedException {
+		Notification notification = new Notification(0, "notification to deliver correctly");
+		sender.convertAndSendMessage("test_124", notification);
+		Thread.sleep(2000);
+		assertEquals(1, dbService.getNotificationCount(0, "124"));
+	}
 }

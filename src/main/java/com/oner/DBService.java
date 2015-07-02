@@ -12,12 +12,12 @@ public class DBService {
 	private JdbcTemplate jdbcTemplate;
 	
 	@Transactional
-	public void saveToBD(Notification notification) {
-		jdbcTemplate.update("insert into notifications(id, message) values (?,?)", notification.getId(), notification.getMessage());
+	public void saveToBD(Notification notification, String lstnr) {
+		jdbcTemplate.update("insert into notifications(id, lstnr, message) values (?,?,?)", notification.getId(), lstnr, notification.getMessage());
 	}
 	
 	@Transactional
-	public int getNotificationCount(int id) {
-		return jdbcTemplate.queryForObject("select count(*) from notifications where id = ?", Integer.class, id);
+	public int getNotificationCount(int id,  String lstnr) {
+		return jdbcTemplate.queryForObject("select count(*) from notifications where id = ? and lstnr = ?", Integer.class, id, lstnr);
 	}
 }
